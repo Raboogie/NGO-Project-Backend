@@ -1,0 +1,13 @@
+  AWS roels for NGO project 
+1. Admin users role
+Admin users upon login to AWS have  Full Admistrative access to the resources with given account and policies with given access account like
+arn:aws:iam::608662244488:role/Admin_@users
+Admin users:-
+1.1 have access to create  new users and manage  existing  users 
+1.2 have access to create events, manage events and inactivate events
+
+2.Regular users Role
+
+Regualr Users upon login to AWS have the policy only to read from resources
+account Like:arn:aws:iam::608662244488:role/Users
+2.1. Regular users have only access to read  resources
