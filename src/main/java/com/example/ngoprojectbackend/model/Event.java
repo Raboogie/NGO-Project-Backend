@@ -11,7 +11,6 @@ import java.time.LocalTime;
 @Table(name = "Event")
 public class Event implements Serializable {
     @Id
-    //@Column(name = "Event_Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int eventId;
 
