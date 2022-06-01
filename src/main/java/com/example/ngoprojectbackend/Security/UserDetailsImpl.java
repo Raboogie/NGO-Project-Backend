@@ -1,6 +1,5 @@
 package com.example.ngoprojectbackend.Security;
 
-import com.example.ngoprojectbackend.model.Role;
 import com.example.ngoprojectbackend.model.User;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import org.springframework.security.core.GrantedAuthority;
@@ -14,13 +13,13 @@ import java.util.stream.Collectors;
 
 public class UserDetailsImpl implements UserDetails {
     private static final long serialVersionUID = 1L;
-    private Long id;
+    private int id;
     private String username;
     private String email;
     @JsonIgnore
     private String password;
     private Collection<? extends GrantedAuthority> authorities;
-    public UserDetailsImpl(Long id, String username, String email, String password,
+    public UserDetailsImpl(int id, String username, String email, String password,
                            Collection<? extends GrantedAuthority> authorities) {
         this.id = id;
         this.username = username;
@@ -43,7 +42,7 @@ public class UserDetailsImpl implements UserDetails {
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
-    public Long getId() {
+    public int getId() {
         return id;
     }
     public String getEmail() {

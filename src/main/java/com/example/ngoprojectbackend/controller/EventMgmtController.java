@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @Transactional
+@RequestMapping("/api/event")
 public class EventMgmtController {
     @Autowired
     private EventService eventService;

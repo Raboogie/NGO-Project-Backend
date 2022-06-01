@@ -13,10 +13,13 @@ import java.util.Set;
                 @UniqueConstraint(columnNames = "username"),
                 @UniqueConstraint(columnNames = "email")
         })
-public class User {
+public class User{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private int id;
+
+    private String FirstName;
+    private String LastName;
     @NotBlank
     @Size(max = 20)
     private String username;
@@ -24,6 +27,7 @@ public class User {
     @Size(max = 50)
     @Email
     private String email;
+
     @NotBlank
     @Size(max = 120)
     private String password;
@@ -32,6 +36,8 @@ public class User {
             joinColumns = @JoinColumn(name = "user_id"),
             inverseJoinColumns = @JoinColumn(name = "role_id"))
     private Set<Role> roles = new HashSet<>();
+
+
     public User() {
     }
     public User(String username, String email, String password) {
@@ -39,10 +45,20 @@ public class User {
         this.email = email;
         this.password = password;
     }
-    public Long getId() {
+
+    public User(String Fname, String Lname,String username, String email, String password) {
+        this.FirstName = Fname;
+        this.LastName = Lname;
+        this.username = username;
+        this.email = email;
+        this.password = password;
+    }
+    public int getId() {
         return id;
     }
-    public void setId(Long id) {
+
+    //public int getid(){return id.intValue();}
+    public void setId(int id) {
         this.id = id;
     }
     public String getUsername() {
@@ -68,5 +84,21 @@ public class User {
     }
     public void setRoles(Set<Role> roles) {
         this.roles = roles;
+    }
+
+    public String getFirstName() {
+        return FirstName;
+    }
+
+    public void setFirstName(String firstName) {
+        FirstName = firstName;
+    }
+
+    public String getLastName() {
+        return LastName;
+    }
+
+    public void setLastName(String lastName) {
+        LastName = lastName;
     }
 }

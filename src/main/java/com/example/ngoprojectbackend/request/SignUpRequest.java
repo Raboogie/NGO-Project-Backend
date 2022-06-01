@@ -21,6 +21,9 @@ public class SignUpRequest {
     @Size(min = 6, max = 40)
     private String password;
 
+    private String lastName;
+
+    private String firstName;
     public String getUsername() {
         return username;
     }
@@ -51,5 +54,21 @@ public class SignUpRequest {
 
     public void setRole(Set<String> role) {
         this.role = role;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public String getFirstName() {
+        return firstName;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 }
