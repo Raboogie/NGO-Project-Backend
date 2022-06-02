@@ -10,4 +10,9 @@ class NgoProjectBackendApplicationTests {
     void contextLoads() {
     }
 
+    @Test
+    void getAllEvents() {
+
+    }
+
 }

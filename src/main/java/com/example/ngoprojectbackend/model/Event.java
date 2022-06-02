@@ -55,6 +55,16 @@ public class Event implements Serializable {
         return eventId;
     }
 
+    public Event() {
+    }
+
+    public Event(int eventId, String eventName, String category, String location) {
+        this.eventId = eventId;
+        this.eventName = eventName;
+        this.category = category;
+        this.location = location;
+    }
+
     public void setEventId(int eventId) {
         this.eventId = eventId;
     }
