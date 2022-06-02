@@ -31,7 +31,7 @@ public class EventMgmtController {
         Event event = eventService.getEventById(id);
 
         if (id != event.getEventId()) {
-            throw new ResourceNotFoundException("Event id: " + id + "does not exist.");
+            throw new ResourceNotFoundException("Event id: " + id + " does not exist.");
         } else {
             return ResponseEntity.ok(event);
         }
@@ -49,7 +49,7 @@ public class EventMgmtController {
         Event event = eventService.getEventById(id);
 
         if (id != event.getEventId()) {
-            throw new ResourceNotFoundException("Event id: " + id + "does not exist.");
+            throw new ResourceNotFoundException("Event id: " + id + " does not exist.");
         } else {
             event.setEventName(eventInfo.getEventName());
             event.setCategory(eventInfo.getCategory());
@@ -72,7 +72,7 @@ public class EventMgmtController {
         Event event = eventService.getEventById(id);
 
         if (id != event.getEventId()) {
-            throw new ResourceNotFoundException("Event id: " + id + "does not exist.");
+            throw new ResourceNotFoundException("Event id: " + id + " does not exist.");
         } else {
             eventService.deleteEvent(event.getEventId());
             Map<String, Boolean> response = new HashMap<>();
