@@ -14,7 +14,6 @@ import java.util.Map;
 
 @RestController
 @Transactional
-@RequestMapping("/api/event")
 public class EventMgmtController {
     @Autowired
     private EventService eventService;
@@ -57,6 +56,7 @@ public class EventMgmtController {
         event.setEndTime(eventInfo.getEndTime());
         event.setAdultTicketPrice(eventInfo.getAdultTicketPrice());
         event.setChildTicketPrice(eventInfo.getChildTicketPrice());
+        event.setImage(eventInfo.getImage());
 
         Event updatedEvent = eventService.createEvent(event);
         return ResponseEntity.ok(updatedEvent);

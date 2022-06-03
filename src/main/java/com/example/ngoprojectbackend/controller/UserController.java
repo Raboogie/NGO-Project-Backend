@@ -1,14 +1,12 @@
 package com.example.ngoprojectbackend.controller;
 
+
 import com.example.ngoprojectbackend.Security.JwtUtils;
 import com.example.ngoprojectbackend.model.ERole;
-import com.example.ngoprojectbackend.model.Event;
 import com.example.ngoprojectbackend.model.Role;
 import com.example.ngoprojectbackend.model.User;
-import com.example.ngoprojectbackend.repo.RoleRepo;
-import com.example.ngoprojectbackend.repo.UserRepo;
-import com.example.ngoprojectbackend.request.SignUpRequest;
-import com.example.ngoprojectbackend.response.MessageResponse;
+import com.example.ngoprojectbackend.repo.RoleRepository;
+import com.example.ngoprojectbackend.repo.UserRepository;
 import com.example.ngoprojectbackend.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -21,105 +19,107 @@ import java.util.*;
 
 @RequestMapping("/api/users")
 @RestController
+@CrossOrigin(origins = "http://localhost:4200")
 public class UserController {
     @Autowired
     UserService userService;
+
+  @Autowired
+  RoleRepository roleRepository;
     @Autowired
     AuthenticationManager authenticationManager;
     @Autowired
-    UserRepo userRepo;
+    UserRepository userRepo;
     @Autowired
-    RoleRepo roleRepo;
+    RoleRepository roleRepo;
     @Autowired
     PasswordEncoder encoder;
     @Autowired
     JwtUtils jwtUtils;
 
 
-    @PostMapping("/addUser")
-    public ResponseEntity<?> registerUser(@Valid @RequestBody SignUpRequest signUpRequest) {
-        if (userRepo.existsByUsername(signUpRequest.getUsername())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Username is already taken!"));
-        }
-        if (userRepo.existsByEmail(signUpRequest.getEmail())) {
-            return ResponseEntity.badRequest().body(new MessageResponse("Error: Email is already in use!"));
-        }
-        // Create new user's account
-        User user = new User(signUpRequest.getLastName(),
-                signUpRequest.getFirstName(),
-                signUpRequest.getUsername(),
-                signUpRequest.getEmail(),
-                encoder.encode(signUpRequest.getPassword()));
-        Set<String> strRoles = signUpRequest.getRole();
-        Set<Role> roles = new HashSet<>();
-        if (strRoles == null) {
-            Role userRole = roleRepo.findByName(ERole.ROLE_USER)
-                    .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-            roles.add(userRole);
-        } else {
-            strRoles.forEach(role -> {
-                switch (role) {
-                    case "admin":
-                        Role adminRole = roleRepo.findByName(ERole.ROLE_ADMIN)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(adminRole);
-                        break;
-                    default:
-                        Role userRole = roleRepo.findByName(ERole.ROLE_USER)
-                                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-                        roles.add(userRole);
-                }
-            });
-        }
-        user.setRoles(roles);
-        userRepo.save(user);
-        return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
-    }
 
     @GetMapping("/getAllUsers")
     public List<User> EventList() {
+
+        System.out.println("Getting...");
         return userService.getUsers();
     }
 
-    @GetMapping("/getUser/{id}")
-    public ResponseEntity<User> UserByIdList(@PathVariable int id) {
-        User user = userService.getUserById(id);
-        return ResponseEntity.ok(user);
-    }
-
-    @PutMapping("/updateUser/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable int id, @RequestBody User userInfo) {
-        User user = userService.getUserById(id);
-
-        user.setEmail(userInfo.getEmail());
-        user.setUsername(userInfo.getUsername());
-        user.setFirstName(userInfo.getFirstName());
-        user.setLastName(userInfo.getLastName());
-        user.setRoles(userInfo.getRoles());
-        user.setPassword(userInfo.getPassword());
-
-        User updatedUser = userService.createUser(user);
-        return ResponseEntity.ok(updatedUser);
-    }
-
-    @PatchMapping("/patchUser/{id}")
-    public ResponseEntity<User> patchUser(@PathVariable int id, @RequestBody User userInfo) {
-        User user = userService.getUserById(id);
-
-        user.setFirstName(userInfo.getFirstName());
-        user.setLastName(userInfo.getLastName());
-
-        User patchUser = userService.patchUser(user);
-        return ResponseEntity.ok(patchUser);
-    }
     @DeleteMapping("/deleteUser/{id}")
-    public ResponseEntity<Map<String, Boolean>> deleteEvent(@PathVariable int id) {
+    public ResponseEntity<Map<String, Boolean>> deleteEvent(@PathVariable Long id) {
         User user = userService.getUserById(id);
         userService.deleteUser(user.getId());
         Map<String, Boolean> response = new HashMap<>();
         response.put("deleted", Boolean.TRUE);
         return ResponseEntity.ok(response);
     }
+
+    @GetMapping("/getUser/{id}")
+    public ResponseEntity<User> UserByIdList(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
+    }
+
+    @PutMapping("/updateUser/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User userInfo) {
+        User user = userService.getUserById(id);
+
+        user.setEmail(userInfo.getEmail());
+        user.setUsername(userInfo.getUsername());
+        user.setFirstname(userInfo.getFirstname());
+        user.setLastname(userInfo.getLastname());
+        user.setRolename(userInfo.getRolename());
+        user.setPassword(userInfo.getPassword());
+        Set<Role> roles = new HashSet<>();
+      if (user.getRolename() == null) {
+        Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+          .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+        roles.add(userRole);
+      } else {
+        System.out.println(user.getRolename());
+        switch(user.getRolename()){
+
+          case"admin":
+            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(adminRole);
+
+            break;
+          default:
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
+        }
+
+      };
+
+      user.setRoles(roles);
+
+        User updatedUser = userService.createUser(user);
+        return ResponseEntity.ok(updatedUser);
+    }
+
+    @PatchMapping("/patchUser/{id}")
+    public ResponseEntity<User> patchUser(@PathVariable Long id, @RequestBody User userInfo) {
+        User user = userService.getUserById(id);
+
+        user.setFirstname(userInfo.getFirstname());
+        user.setLastname(userInfo.getLastname());
+
+        User patchUser = userService.patchUser(user);
+        return ResponseEntity.ok(patchUser);
+    }
+
+@GetMapping("/getRoles/{id}")
+  public String listRoles(Long id){
+      return userService.getRoleById(id);
+
+    }
+
+
+
+
 
 
 }

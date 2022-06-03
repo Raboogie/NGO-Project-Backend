@@ -2,6 +2,7 @@ package com.example.ngoprojectbackend.model;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import java.io.Serializable;
 @Entity
@@ -12,14 +13,15 @@ public class Registeration implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int RegisterId;
 
-    @Pattern(regexp="(^$|[0-9]{10})")
     @NotBlank
+    String Fullname;
+
     String phoneNumber;
 
-    @NotBlank
+    @NotNull
     int AdultQty;
 
-    @NotBlank
+    @NotNull
     int ChildQty;
 
     @NotBlank
@@ -31,6 +33,16 @@ public class Registeration implements Serializable {
     inverseJoinColumns = @JoinColumn(name = "reg_id"))
     private Event event;
 
+public Registeration(){}
+    public Registeration(int registerId, String fullname, String phoneNumber, int adultQty, int childQty, String address, Event event) {
+        RegisterId = registerId;
+        Fullname = fullname;
+        this.phoneNumber = phoneNumber;
+        AdultQty = adultQty;
+        ChildQty = childQty;
+        this.address = address;
+        this.event = event;
+    }
 
     public int getRegisterId() {
         return RegisterId;
@@ -78,5 +90,13 @@ public class Registeration implements Serializable {
 
     public void setEvent(Event event) {
         this.event = event;
+    }
+
+    public String getFullname() {
+        return Fullname;
+    }
+
+    public void setFullname(String fullname) {
+        Fullname = fullname;
     }
 }

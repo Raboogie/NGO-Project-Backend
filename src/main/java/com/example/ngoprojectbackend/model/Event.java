@@ -52,6 +52,9 @@ public class Event implements Serializable {
     //@Column(name = "Child Ticket Price")
     double childTicketPrice;
 
+    @NotNull
+    private String image;
+
     public int getEventId() {
         return eventId;
     }
@@ -132,7 +135,15 @@ public class Event implements Serializable {
         this.childTicketPrice = childTicketPrice;
     }
 
-    @Override
+  public String getImage() {
+    return image;
+  }
+
+  public void setImage(String image) {
+    this.image = image;
+  }
+
+  @Override
     public String toString() {
         return "Event{" +
                 "eventId=" + eventId +
