@@ -72,7 +72,7 @@ public class UploadController {
         }catch(AmazonServiceException e) {
             return "uploadFileTos3bucket().Uploading failed :" + e.getMessage();
         }
-        return "Uploading Successfull -> ";
+        return "Uploading Successful -> ";
     }
 
 }

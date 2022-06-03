@@ -11,7 +11,6 @@ import java.time.LocalTime;
 @Table(name = "Event")
 public class Event implements Serializable {
     @Id
-    //@Column(name = "Event_Id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     int eventId;
 
@@ -52,11 +51,18 @@ public class Event implements Serializable {
     //@Column(name = "Child Ticket Price")
     double childTicketPrice;
 
-    @NotNull
-    private String image;
-
     public int getEventId() {
         return eventId;
+    }
+
+    public Event() {
+    }
+
+    public Event(int eventId, String eventName, String category, String location) {
+        this.eventId = eventId;
+        this.eventName = eventName;
+        this.category = category;
+        this.location = location;
     }
 
     public void setEventId(int eventId) {
@@ -135,15 +141,7 @@ public class Event implements Serializable {
         this.childTicketPrice = childTicketPrice;
     }
 
-  public String getImage() {
-    return image;
-  }
-
-  public void setImage(String image) {
-    this.image = image;
-  }
-
-  @Override
+    @Override
     public String toString() {
         return "Event{" +
                 "eventId=" + eventId +

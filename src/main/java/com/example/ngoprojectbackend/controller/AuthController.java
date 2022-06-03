@@ -111,9 +111,8 @@ public class AuthController {
 
     user.setRoles(roles);
     userRepository.save(user);
-System.out.println("done addind");
-    System.out.println("done addind");
-    System.out.println("done addind");
     return ResponseEntity.ok(new MessageResponse("User registered successfully!"));
   }
+
+
 }
